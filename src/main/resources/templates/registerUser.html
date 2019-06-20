@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+xmlns:th="http://www.thymeleaf.org" class="h-100 w-100">
+<head>
+<meta charset="UTF-8">
+<title>User Register</title>
+<link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="/css/styles.css">
+</head>
+<body class="h-100">
+	<div class="container col-12">
+		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+			<a class="navbar-brand" href="/">
+				<img src="/img/logo.png" width="150" height="70" alt="">
+		  	</a>
+		  	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+		    	<span class="navbar-toggler-icon"></span>
+		  	</button>
+		
+			<div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+				<ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+					<li class="nav-item">
+						<a class="nav-link" href="/"> Página Inicial</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="/about">Sobre</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#">Pratos</a>
+					</li>
+			    </ul>
+			    <div sec:authorize="!isAuthenticated()">
+			    	<a class="new-nav-link1" href="/user/login">Entre</a>
+			    	<span style="color: rgba(255,255,255,.5)"> 	ou </span>
+			    	<a class="new-nav-link2" href="/user/register">Cadastre-se</a>
+			    </div>
+			    <div sec:authorize="isAuthenticated()">
+			    	<h6 class="h6">Bem Vindo, <span>Pegar o cara da sessão</span></h6>
+			    </div>
+			</div>
+		</nav>
+		<div class="container col-md-4 wrapper-form top-1-percent">
+			<div class="row justify-content-center">
+				<h2>Cadastro</h2>
+			</div>
+			<div class="row">
+				<div class="col">
+					<form action="/user/save" method="POST" th:object="${user}">
+						<div class="alert alert-success" role="alert" th:if="${!#strings.isEmpty(message)}">
+							<span th:text="${message}"></span>
+						</div>
+						<div class="alert alert-danger" role="alert" th:if="${#fields.hasAnyErrors()}">
+							<div th:each="detailedError : ${#fields.detailedErrors()}">
+								<span th:text="${detailedError.message}"></span>
+							</div>
+						</div>
+						<input type="hidden" th:field="*{code}" />
+						<div class="form-group">
+							<label for="email">E-mail</label>
+						    <input type="email" class="form-control" id="email" th:field="*{email}" placeholder="Digite seu e-mail">
+						</div>
+						<div class="form-group">
+							<label for="pass">Senha</label>
+						    <input type="password" class="form-control" id="pass" th:field="*{pass}" placeholder="Digite sua senha">
+						</div>
+						<div class="form-group">
+							<label for="name">Nome</label>
+						    <input type="text" class="form-control" id="name" th:field="*{name}" placeholder="Digite seu nome">
+						</div>
+					  	<div class="form-row">
+					  		<div class="form-group col-5">
+						    	<label for="cpf">CPF</label>
+						    	<input type="text" class="form-control" id="cpf" th:field="*{cpf}" placeholder="Digite seu CPF">
+						  	</div>
+						  	<div class="form-group col">
+							    <label for="date-of-birth">Data de Nascimento</label>
+							    <input type="text" class="form-control" id="date-of-birth" th:field="*{dateOfBirth}" placeholder="Digite sua data de nascimento">
+							</div>
+					  	</div>
+					  	<div class="form-group">
+					    	<label for="address">Endereço</label>
+					    	<input type="text" class="form-control" id="address" th:field="*{address}" placeholder="Digite seu endereço">
+					  	</div>
+						
+						<input type="submit" class="btn btn-primary btn-large btn-block" value="Cadastrar">
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<script src="/js/jquery-3.4.1.min.js"></script>
+	<script src="/js/bootstrap.min.js"></script>
+	<script src="/js/jquery.mask.min.js"></script>
+</body>
+</html>

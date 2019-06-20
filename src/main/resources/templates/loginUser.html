@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+xmlns:th="http://www.thymeleaf.org" class="h-100 w-100">
+<head>
+<meta charset="UTF-8">
+<title>Login</title>
+<link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="/css/styles.css">
+</head>
+<body class="h-100">
+	<div class="container col-12 h-100">
+		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+			<a class="navbar-brand" href="/">
+				<img src="/img/logo.png" width="150" height="70" alt="">
+		  	</a>
+		  	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+		    	<span class="navbar-toggler-icon"></span>
+		  	</button>
+		
+			<div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+				<ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+					<li class="nav-item">
+						<a class="nav-link" href="/"> Página Inicial</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="/about">Sobre</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#">Pratos</a>
+					</li>
+			    </ul>
+			    <div sec:authorize="!isAuthenticated()">
+			    	<a class="new-nav-link1" href="/user/login">Entre</a>
+			    	<span style="color: rgba(255,255,255,.5)"> 	ou </span>
+			    	<a class="new-nav-link2" href="/user/register">Cadastre-se</a>
+			    </div>
+			    <div sec:authorize="isAuthenticated()">
+			    	<h6 class="h6">Bem Vindo, <span>Pegar o cara da sessão</span></h6>
+			    </div>
+			</div>
+		</nav>
+		<div class="container col-md-4 wrapper-form top-5-percent">
+			<div class="row justify-content-center">
+				<h2>Entrar</h2>
+			</div>
+			<div class="row">
+				<div class="col">
+					<form method="POST">
+						<div class="form-group">
+							<label for="login">E-mail</label>
+						    <input type="text" class="form-control" name="username" id="login" placeholder="Digite seu email">
+						</div>
+						<div class="form-group">
+							<label for="pass">Senha</label>
+						    <input type="password" class="form-control" id="pass" name="password" placeholder="Digite sua senha">
+						</div>
+						<input type="submit" class="btn btn-primary btn-large btn-block" value="Login">
+						<div class="col-md-12 ">
+                        	<div class="login-or">
+                            	<hr class="hr-or">
+                            	<span class="span-or">ou</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                        	<p class="text-center">Não possui uma conta? <a href="/user/register">Criar</a></p>
+                        </div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	
+	<script src="/js/jquery-3.4.1.min.js"></script>
+	<script src="/js/bootstrap.min.js"></script>
+</body>
+</html>

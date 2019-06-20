@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+xmlns:th="http://www.thymeleaf.org" class="h-100 w-100">
+<head>
+<meta charset="UTF-8">
+<title>Dish Register</title>
+<link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="/css/styles.css">
+</head>
+<body class="h-100">
+	<div class="container col-12">
+		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+			<a class="navbar-brand" href="/">
+				<img src="/img/logo.png" width="150" height="70" alt="">
+		  	</a>
+		  	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+		    	<span class="navbar-toggler-icon"></span>
+		  	</button>
+		
+			<div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+				<ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+					<li class="nav-item">
+						<a class="nav-link" href="/"> Página Inicial</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="/about">Sobre</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#">Pratos</a>
+					</li>
+			    </ul>
+			    <div sec:authorize="!isAuthenticated()">
+			    	<a class="new-nav-link1" href="/user/login">Entre</a>
+			    	<span style="color: rgba(255,255,255,.5)"> 	ou </span>
+			    	<a class="new-nav-link2" href="/user/register">Cadastre-se</a>
+			    </div>
+			    <div sec:authorize="isAuthenticated()">
+			    	<h6 class="h6">Bem Vindo, <span>Pegar o cara da sessão</span></h6>
+			    </div>
+			</div>
+		</nav>
+		<div class="container col-md-4 wrapper-form top-1-percent">
+			<div class="row justify-content-center">
+				<h2>Cadastrar Prato</h2>
+			</div>
+			<div class="row">
+				<div class="col">
+					<form action="/dish/save" method="POST" th:object="${dish}" enctype="multipart/form-data">
+						<div class="alert alert-success" role="alert" th:if="${!#strings.isEmpty(message)}">
+							<span th:text="${message}"></span>
+						</div>
+						<div class="alert alert-danger" role="alert" th:if="${#fields.hasAnyErrors()}">
+							<div th:each="detailedError : ${#fields.detailedErrors()}">
+								<span th:text="${detailedError.message}"></span>
+							</div>
+						</div>
+						<input type="hidden" th:field="*{id}" />
+						<div class="form-group">
+							<label for="name">Nome do prato</label>
+						    <input type="text" class="form-control" id="name" th:field="*{name}" placeholder="Digite o nome do prato">
+						</div>
+				  		<div class="form-group">
+					    	<label for="description">Descrição</label>
+					    	<input type="text" class="form-control" id="description" th:field="*{description}" placeholder="Digite uma descrição">
+					  	</div>
+					  	<div class="form-group">
+						    <label for="price">Preço</label>
+						    <input type="number" class="form-control" id="price" step=".01" th:field="*{price}" placeholder="Digite o preço">
+						</div>
+						<div class="form-group">
+						    <label for="photo">Imagem do prato</label>
+						    <input type="file" class="form-control" id="photo" name="photo" placeholder="Escolha uma imagem">
+						</div>
+						
+						<input type="submit" class="btn btn-primary btn-large btn-block" value="Cadastrar">
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<script src="/js/jquery-3.4.1.min.js"></script>
+	<script src="/js/bootstrap.min.js"></script>
+	<script src="/js/jquery.mask.min.js"></script>
+	
+</body>
+</html>

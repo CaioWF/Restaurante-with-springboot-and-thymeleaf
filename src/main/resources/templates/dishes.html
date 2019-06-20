@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+xmlns:th="http://www.thymeleaf.org" class="h-100 w-100">
+<head>
+<meta charset="UTF-8">
+<title>Dish Register</title>
+<link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="/css/styles.css">
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+</head>
+<body class="h-100">
+	<div class="container col-12">
+		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+			<a class="navbar-brand" href="/">
+				<img src="/img/logo.png" width="150" height="70" alt="">
+		  	</a>
+		  	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+		    	<span class="navbar-toggler-icon"></span>
+		  	</button>
+		
+			<div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+				<ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+					<li class="nav-item">
+						<a class="nav-link" href="/"> Página Inicial</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="/about">Sobre</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#">Pratos</a>
+					</li>
+			    </ul>
+			    <div sec:authorize="!isAuthenticated()">
+			    	<a class="new-nav-link1" href="/user/login">Entre</a>
+			    	<span style="color: rgba(255,255,255,.5)"> 	ou </span>
+			    	<a class="new-nav-link2" href="/user/register">Cadastre-se</a>
+			    </div>
+			    <div sec:authorize="isAuthenticated()">
+			    	<h6 class="h6">Bem Vindo, <span>Pegar o cara da sessão</span></h6>
+			    </div>
+			</div>
+		</nav>
+		
+		
+		
+		
+		<div class="container-fluid d-flex w-100">
+			<!-- Grid row -->
+			<div class="row w-100">
+				<div class="col-lg-8" style="margin-top: 5px;">
+					<div class="row">
+						<div class="col-lg-4 col-md-12 mb-4" th:each="dish : ${listdishes}">
+						    <!--Modal: Name-->
+						    <div class="modal fade" th:id="'modal'+${dish.id}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+						      <div class="modal-dialog modal-lg" role="document">
+						        <!--Content-->
+						        <div class="modal-content" th:object="${item}">
+						          <!--Body-->
+						          <div style="max-height:450px; overflow-y: scroll;" class="modal-body mb-0 p-0">
+						          	
+						            <div class="embed-responsive z-depth-1-half ">
+						            	<button style="position:absolute;right:5px;color:black;" type="button" class="close" data-dismiss="modal">&times;</button>
+						              	<img style="max-width:800px;" class="img-fluid z-depth-1" th:src="@{'/images/dish/'+${dish.id}+.png}" alt="prato">
+						            </div>
+						            <div>
+						            	<span class="id" th:text="${dish.id}"></span>
+					            		<h2 class="name" th:text="${dish.name}"></h2>
+					            		<h3 class="price" th:text="${dish.price}"></h3>
+					            		<p th:text="${dish.description}">
+					            	</div>
+						          </div>
+						
+						          <!--Footer-->
+						          <div class="modal-footer">
+						            
+						            <div>
+							            <button id="decrease" class="btn btn-light d-inline decrease" disabled><h2>-</h2></button>
+							            <input style="max-width:50px;text-align:center;" min="1" type="number" class="d-inline qtd" value="1">
+							            <button id="increase" class="btn btn-light increase"><h3>+</h3></button>
+						            </div>
+						            
+						            <a th:href="'/pedido/add-item-to-shoppingcart/'+${dish.id}+'/1'" style="color:white;" class="btn btn-danger btn-rounded btn-lg pull-right add-item">Adicionar R$ <span class="price-calculated" th:text="${dish.price}"></span></a>
+						
+						          </div>
+						
+						        </div>
+						        <!--/.Content-->
+						
+						      </div>
+						    </div>
+						    <!--Modal: Name-->
+						
+						    <a><img style="max-width: 250px; max-height: 200px" class="img-fluid img-thumbnail" th:src="@{'/images/dish/'+${dish.id}+.png}" alt="prato"
+						        data-toggle="modal" th:attr="data-target='#modal'+${dish.id}"></a>
+						
+						  </div>
+					</div>
+				</div>
+				<div class="col-lg-4 mh-100" style="margin-top: 5px;background-color: #eee;">
+					<div>
+						<div class="text-center">
+							<h2 class="bg-info" style="color:white;">Lista de Itens</h2>
+							<div class="mh-75 table-overflow">
+								<table style="max-height:600px;" class="table" id="items-order">
+									<thead>
+										<tr>
+											<th scope="col">Nome</th>
+											<th scope="col">Quantidade</th>
+											<th scope="col">Valor</th>
+											<th scope="col">Remover</th>
+										</tr>
+									</thead>
+									<tbody id="tbody">
+										<tr th:each="item,iterStat : ${listitems}">
+											<td style="display:none;" th:text="${iterStat.index}"></td>
+											<td th:text="${item.dish.name}"></td>
+											<td th:text="${item.quantity}"></td>
+											<td th:text="${#numbers.formatDecimal(item.totalPrice, 0, 'COMMA', 2, 'POINT')}"></td>
+											<td><a th:href="@{/pedido/delete-item-from-shoppingcart/{index}(index=${iterStat.index})}"><button type="button" class="btn btn-outline-danger"><span class="fa fa-trash"></span></button></a></td>
+										</tr>
+									</tbody>
+								</table>
+								<div th:if="${#lists.isEmpty(listitems)}" id="nothing-selected">Nenhum item selecionado</div>
+							</div>
+							<button th:if="${not #lists.isEmpty(listitems)}" style="bottom:0;max-width:385px;" class="btn btn-success btn-large btn-block position-absolute" id="finish-order">Finalizar pedido</button>
+						</div>
+					</div>
+				</div>
+			  <!-- Grid column -->
+			</div>
+		</div>
+	</div>
+	
+	<script src="/js/jquery-3.4.1.min.js"></script>
+	<script src="/js/bootstrap.min.js"></script>
+	<script>
+		$(document).ready(function(){
+			
+			$(".qtd").change(function(){
+				var btnDecrease = $(this).parent().find('.decrease');
+				if(parseInt($(this).val()) <= 1) {
+					btnDecrease.attr("disabled", true);
+				} else {
+					btnDecrease.attr("disabled", false);
+				}
+				var price = parseFloat($(this).parent().parent().parent().find('.price').text());
+				var qtd = parseInt($(this).parent().find(".qtd").val());
+				$(this).parent().parent().find('.price-calculated').text((price * qtd).toFixed(2));
+				var href = $(this).parent().parent().find('.add-item').attr('href');
+				href = ('href', href.substring(0, href.lastIndexOf("/")));
+				href += "/"+qtd;
+				$(this).parent().parent().find('.add-item').attr('href', href);
+				console.log(href);
+	        });
+	        $(".decrease").click(function(){
+	        	var qtdElement = $(this).parent().find(".qtd");
+	        	var qtdValue = parseInt(qtdElement.val());
+	        	qtdElement.val(qtdValue-1);
+	        	qtdElement.change();
+	            
+	        });
+	        $(".increase").click(function(){
+	        	var qtdElement = $(this).parent().find(".qtd");
+	        	var qtdValue = parseInt(qtdElement.val());
+	        	qtdElement.val(qtdValue+1);
+	        	qtdElement.change();
+	        });
+	        /*$("#tbody").change(function() {
+	        	if($(this).children.length > 0) {
+	        		$("#nothing-selected").hide();
+	        		$("#finish-order").attr("disabled", false);
+	        	} else {
+	        		$("#nothing-selected").show();
+	        		$("#finish-order").attr("disabled", true);
+	        	}
+	        });
+	        $(".add-item").click(function(){
+	        	var contentElement = $(this).parent().parent();
+	        	var qtdValue = parseInt(contentElement.find(".qtd").val());
+	        	var totalPrice = parseFloat(contentElement.find(".price-calculated").text()).toFixed(2);
+	        	var dishId = parseInt(contentElement.find(".id").text());
+	        	var dishName = contentElement.find(".name").text();
+	        	var tableElement = $("#items-order");
+	        	var tbody = document.createElement("tbody");
+	        	if($("#items-order").children().length == 0) {
+	        		var theadElement = document.createElement("thead");
+	        		var trElement = document.createElement("tr");
+	        		var thElement1 = document.createElement("th");
+	        		var text1 = document.createTextNode("Nome");
+	        		thElement1.appendChild(text1);
+	        		trElement.appendChild(thElement1);
+	        		var thElement2 = document.createElement("th");
+	        		var text2 = document.createTextNode("Quantidade");
+	        		thElement2.appendChild(text2);
+	        		trElement.appendChild(thElement2);
+	        		var thElement3 = document.createElement("th");
+	        		var text3 = document.createTextNode("Valor");
+	        		thElement3.appendChild(text3);
+	        		trElement.appendChild(thElement3);
+	        		var thElement4 = document.createElement("th");
+	        		var text4 = document.createTextNode("Id prato");
+	        		thElement4.appendChild(text4);
+	        		trElement.appendChild(thElement4);
+	        		theadElement.appendChild(trElement);
+	        		tableElement.append(theadElement);	
+	        		$("#nothing-selected").remove();
+	        		var tbodyElement = document.createElement("tbody");
+	        		tbodyElement.setAttribute("id", "tbody");
+	        		tableElement.append(tbodyElement);
+	        	}
+	        	var trElement = document.createElement("tr");
+        		var tdElement1 = document.createElement("td");
+        		var text1 = document.createTextNode(dishName);
+        		tdElement1.appendChild(text1);
+        		trElement.appendChild(tdElement1);
+        		var tdElement2 = document.createElement("td");
+        		var text2 = document.createTextNode(qtdValue);
+        		tdElement2.appendChild(text2);
+        		trElement.appendChild(tdElement2);
+        		var tdElement3 = document.createElement("td");
+        		var text3 = document.createTextNode(totalPrice);
+        		tdElement3.appendChild(text3);
+        		trElement.appendChild(tdElement3);
+        		var tdElement4 = document.createElement("td");
+        		var text4 = document.createTextNode(dishId);
+        		tdElement4.appendChild(text4);
+        		trElement.appendChild(tdElement4);
+        		$("#tbody").append(trElement);
+	        });
+	        $("table").change(function(){
+	        	
+	        });*/
+	    });
+		
+	</script>
+	
+</body>
+</html>

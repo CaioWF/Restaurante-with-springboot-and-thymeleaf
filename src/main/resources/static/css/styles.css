@@ -1,0 +1,99 @@
+*{
+	margin: 0;
+	padding:0;
+}
+.wrapper-form {
+	position: relative;
+	display: -ms-flexbox;
+	display: flex;
+	padding: 1rem;
+	-ms-flex-direction: column;
+	flex-direction: column;
+	width: 100%;
+	pointer-events: auto;
+	background-color: #fff;
+	background-clip: padding-box;
+	border: 1px solid rgba(0,0,0,.2);
+	border-radius: 1.1rem;
+	outline: 0;
+	max-width: 500px;
+}
+.top-5-percent {
+	margin-top: 5%;
+}
+.top-1-percent {
+	margin-top: 1%;
+}
+.login-or {
+	position: relative;
+	color: #aaa;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+.span-or {
+	display: block;
+	position: absolute;
+	left: 50%;
+	top: -2px;
+	margin-left: -25px;
+	background-color: #fff;
+	width: 50px;
+	text-align: center;
+	}
+.hr-or {
+	height: 1px;
+	margin-top: 0px;
+	margin-bottom: 0px;
+}
+.new-nav-link1 {
+	color: white;
+	border: 1px solid white;
+	border-radius: 5px;
+	padding: 5px;
+}
+.new-nav-link1:active {
+	text-decoration: none;
+}
+.new-nav-link1:visited {
+	text-decoration: none;
+}
+.new-nav-link1:hover {
+	text-decoration: none;
+	background: white;
+	color: #333;
+	transition: all 0.2s;
+}
+.new-nav-link2 {
+	color: black;
+	background: white;	
+	border: 1px solid white;
+	border-radius: 5px;
+	padding: 5px;
+}
+.new-nav-link2:active {
+	text-decoration: none;
+}
+.new-nav-link2:visited {
+	text-decoration: none;
+}
+.new-nav-link2:hover {
+	text-decoration: none;
+	background: #333;
+	color: white;
+	transition: all 0.2s;
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    /* display: none; <- Crashes Chrome on hover */
+    -webkit-appearance: none;
+    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+}
+input[type=number] {
+    -moz-appearance:textfield; /* Firefox */
+}
+.table-overflow {
+    max-height:500px;
+    overflow-y:auto;
+}
