@@ -1,5 +1,6 @@
 package br.com.ufc.model;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -9,7 +10,11 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 public class Pedido {
@@ -24,8 +29,9 @@ public class Pedido {
 	private User user;
 	@OneToMany(mappedBy = "pedido", targetEntity = Item.class)
 	private List<Item> items;
-	
-	private boolean close;
+	@DateTimeFormat(pattern = "dd/MM/yyyy")
+	@Temporal(TemporalType.DATE)
+	private Date date;
 	
 	public Long getId() {
 		return id;
@@ -51,10 +57,10 @@ public class Pedido {
 	public void setItems(List<Item> items) {
 		this.items = items;
 	}
-	public boolean isClose() {
-		return close;
+	public Date getDate() {
+		return date;
 	}
-	public void setClose(boolean close) {
-		this.close = close;
+	public void setDate(Date date) {
+		this.date = date;
 	}
 }

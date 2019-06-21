@@ -6,9 +6,10 @@ xmlns:th="http://www.thymeleaf.org">
 <title>Home</title>
 <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="/css/styles.css">
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 </head>
-<body>
-	<div class="container col-12">
+<body style="overflow-x:hidden;">
+	<div class="container-fluid mw-100">
 		<div class="row">
 			<div class="col-12">
 				<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -36,32 +37,75 @@ xmlns:th="http://www.thymeleaf.org">
 					    	<span style="color: rgba(255,255,255,.5)"> 	ou </span>
 					    	<a class="new-nav-link2" href="/user/register">Cadastre-se</a>
 					    </div>
-					    <div sec:authorize="isAuthenticated()">
-					    	<h6 class="h6">Bem Vindo, <span>Pegar o cara da sessão</span></h6>
+					    <div sec:authorize="isAuthenticated()" class="d-inline" style="color: rgba(255,255,255,.5);">
+					    	<h6 class="h6 d-inline">Bem Vindo | </h6>
+					    	<div class="dropdown d-inline">
+							    <a href="#" class="dropdown-toggle trans" data-toggle="dropdown" style="color:inherit;">Opções</a>
+							    <div class="dropdown-menu dropdown-menu-right">
+							        <a th:href="@{/user/update}" class="dropdown-item">Atualizar Informações</a>
+							        <a th:href="@{/user/delete}" class="dropdown-item">Deletar Conta</a>
+							        <a href="/logout" class="dropdown-item">Sair</a>
+							    </div>
+							</div>
 					    </div>
 					</div>
 				</nav>
 			</div>
 			
 		</div>
-		<hr>
-		<div class="row">
-			<div class="col-12">
+		<div class="row" style="margin-top:5px;">
+			<div class="col-md-12">
 				<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
 					<ol class="carousel-indicators">
 						<li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
 						<li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
 						<li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+						<li data-target="#carouselExampleIndicators" data-slide-to="3"></li>
+						<li data-target="#carouselExampleIndicators" data-slide-to="4"></li>
+						<li data-target="#carouselExampleIndicators" data-slide-to="5"></li>
 					</ol>
 					<div class="carousel-inner">
 						<div class="carousel-item active">
-							<img class="d-block w-100" src="..." alt="First slide">
+							<img class="d-block w-100 img-fluid" src="/img/sushi.jpg" alt="Sushi">
+							<div class="carousel-caption d-none d-md-block caption">
+								<h1 class="title-img">Sushi</h1>
+								<p>O melhor Sushi da região!</p>
+							</div>
 						</div>
 						<div class="carousel-item">
-							<img class="d-block w-100" src="..." alt="Second slide">
+							<img class="d-block w-100 img-fluid" src="/img/manju.jpg" alt="Manju">
+							<div class="carousel-caption d-none d-md-block caption">
+								<h1 class="title-img">Manju</h1>
+								<p>O melhor Manju da região!</p>
+							</div>
 						</div>
 						<div class="carousel-item">
-							<img class="d-block w-100" src="..." alt="Third slide">
+							<img class="d-block w-100 img-fluid" src="/img/gunkan.jpg" alt="Gunkan">
+							<div class="carousel-caption d-none d-md-block caption">
+								<h1 class="title-img">Gunkan</h1>
+								<p>O melhor Gunkan da região!</p>
+							</div>
+						</div>
+						<div class="carousel-item">
+							<img class="d-block w-100 img-fluid" src="/img/nigiri.jpg" alt="Nigiri">
+							<div class="carousel-caption d-none d-md-block caption">
+								<h1 class="title-img">Nigiri</h1>
+								<p>O melhor Nigiri da região!</p>
+							</div>
+						</div>
+						<div class="carousel-item">
+							<img class="d-block w-100 img-fluid" src="/img/temaki.jpg" alt="Temaki">
+							<div class="carousel-caption d-none d-md-block caption">
+								<h1 class="title-img">Temaki</h1>
+								<p>O melhor Temaki da região!</p>
+							</div>
+						</div>
+						<div class="carousel-item">
+							<img class="d-block w-100 img-fluid" src="/img/wakame.jpg" alt="Wakame">
+							<div class="carousel-caption d-none d-md-block caption">
+								<h1 class="title-img">Wakame</h1>
+								<p>O melhor Wakame da região!</p>
+							</div>
 						</div>
 					</div>
 					<a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
@@ -74,21 +118,55 @@ xmlns:th="http://www.thymeleaf.org">
 					</a>
 				</div>
 			</div>
+			<div class="row" style="margin-top:5px;">
+				<div class="col-md-6 text-center">
+					<div class="">
+		                <img style="max-width:400px;padding:10px;" src="./img/chef.jpg" alt="chef" class="img-fluid">
+		            </div>
+				</div>
+				<div class="col-md-5 text-justify">
+					<div style="margin-top:20px;padding:10px;">
+		                <h1 class="title-img">Sobre a chef</h1>
+		                <p >Telma finaliza seus pratos como quem dá as últimas pinceladas em uma tela. Nesse momento, a chef que comanda o Yukihira, o mais badalado restaurante japonês da América Latina, mostra-se imersa em sua arte. O mundo parece parar. Tel, como é conhecida pelos amigos, nem de longe lembra a mulher falante, de gestos largos e vocabulário repleto de gírias, ou a cantora com voz de tenor (sim, ela é as duas coisas). Dona de uma concentração invejável e uma disciplina incrível, está em busca de uma perfeição da qual só os orientais são capazes.</p>
+		            </div>
+				</div>
+			</div>
 		</div>
 		
+		<footer class="page-footer font-small cyan darken-3 bg-dark" style="color:white;margin-top:5px;">
+		  <div class="container-fluid" style="max-height:80px;overflow:hidden;">
+		    <div class="row text-center">
+		      <div class="col-md-12 py-5">
+		        <div class="flex-center">
+		          <a class="fb-ic">
+		            <i class="fa fa-facebook-f fa-lg white-text mr-md-5 mr-3 fa-2x"> </i>
+		          </a>
+		          <a class="tw-ic">
+		            <i class="fa fa-twitter fa-lg white-text mr-md-5 mr-3 fa-2x"> </i>
+		          </a>
+		          <a class="gplus-ic">
+		            <i class="fa fa-google-plus fa-lg white-text mr-md-5 mr-3 fa-2x"> </i>
+		          </a>
+		          <a class="li-ic">
+		            <i class="fa fa-linkedin fa-lg white-text mr-md-5 mr-3 fa-2x"> </i>
+		          </a>
+		          <a class="ins-ic">
+		            <i class="fa fa-instagram fa-lg white-text mr-md-5 mr-3 fa-2x"> </i>
+		          </a>
+		          <a class="pin-ic">
+		            <i class="fa fa-pinterest fa-lg white-text fa-2x"> </i>
+		          </a>
+		        </div>
+		      </div>
+		    </div>
+		  </div>
 		
-	
-	
-	INDEX
-	
+		  <div class="footer-copyright text-center py-3">© 2019 Copyright:
+		    <a href="https://www.linkedin.com/in/caio-weliton-6ba0a9173/"> Caio Weliton</a>
+		  </div>
+		  
+		</footer>
 	</div>
-	
-	
-	
-	
-	
-	
-	
 	
 	<script src="/js/jquery-3.4.1.min.js"></script>
 	<script src="/js/bootstrap.min.js"></script>

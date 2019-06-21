@@ -31,4 +31,8 @@ public class UserService {
 	public User getByCode(Long code) {
 		return userRepository.getOne(code);
 	}
+	
+	public User getByEmail(String email) {
+		return userRepository.findByEmail(email);
+	}
 }

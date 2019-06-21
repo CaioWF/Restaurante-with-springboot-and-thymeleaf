@@ -1,6 +1,8 @@
 package br.com.ufc.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -13,8 +15,11 @@ import br.com.ufc.model.Dish;
 import br.com.ufc.model.Item;
 import br.com.ufc.model.Pedido;
 import br.com.ufc.model.ShoppingCart;
+import br.com.ufc.model.User;
 import br.com.ufc.service.DishService;
+import br.com.ufc.service.ItemService;
 import br.com.ufc.service.PedidoService;
+import br.com.ufc.service.UserService;
 
 @Controller
 @RequestMapping("/pedido")
@@ -27,6 +32,12 @@ public class PedidoController {
 	
 	@Autowired
 	private DishService dishService = new DishService();
+	
+	@Autowired
+	private UserService userService = new UserService();
+	
+	@Autowired
+	private ItemService itemService = new ItemService();
 	
 	@RequestMapping("/add-item-to-shoppingcart/{id}/{quantity}")
 	public ModelAndView addItem(@PathVariable Long id, @PathVariable int quantity, RedirectAttributes redir){
@@ -50,13 +61,23 @@ public class PedidoController {
 	}
 	
 	@RequestMapping("/save")
-	public ModelAndView saveDish(@Validated Pedido pedido, BindingResult result) {
-		ModelAndView mv = new ModelAndView("/dish/dishes");
-		if(result.hasErrors()) {
-			return mv;
-		}
+	public ModelAndView savePedido() {
+		Pedido pedido = new Pedido();
+		pedido.setItems(shoppingCart.getItems());
+		pedido.setTotalPrice(shoppingCart.getTotal());
+		
+		Object auth = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		UserDetails user = (UserDetails) auth;
+		User userConnected = userService.getByEmail(user.getUsername());
+		
+		pedido.setUser(userConnected);
 		pedidoService.registerPedido(pedido);
-		mv.addObject("message", "Pedido cadastrado!");
+		
+		shoppingCart.addIdPedido(pedido);
+		itemService.saveAll(shoppingCart.getItems());
+		
+		ModelAndView mv = new ModelAndView("redirect:/");
+		mv.addObject("message", "Pedido realizado!");
 		return mv;
 	}
 

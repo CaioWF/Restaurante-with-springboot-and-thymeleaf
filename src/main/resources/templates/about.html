@@ -6,6 +6,7 @@ xmlns:th="http://www.thymeleaf.org">
 <title>Home</title>
 <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="/css/styles.css">
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 </head>
 <body>
 	<div class="container col-12">
@@ -26,7 +27,7 @@ xmlns:th="http://www.thymeleaf.org">
 						<a class="nav-link active" href="#">Sobre</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="#">Pratos</a>
+						<a class="nav-link" href="/dish/dishes">Pratos</a>
 					</li>
 			    </ul>
 			    <div sec:authorize="!isAuthenticated()">
@@ -34,22 +35,84 @@ xmlns:th="http://www.thymeleaf.org">
 			    	<span style="color: rgba(255,255,255,.5)"> 	ou </span>
 			    	<a class="new-nav-link2" href="/user/register">Cadastre-se</a>
 			    </div>
-			    <div sec:authorize="isAuthenticated()">
-			    	<h6 class="h6">Bem Vindo, <span>Pegar o cara da sessão</span></h6>
+			    <div sec:authorize="isAuthenticated()" class="d-inline" style="color: rgba(255,255,255,.5);">
+			    	<h6 class="h6 d-inline">Bem Vindo | </h6>
+			    	<div class="dropdown d-inline">
+					    <a href="#" class="dropdown-toggle trans" data-toggle="dropdown" style="color:inherit;">Opções</a>
+					    <div class="dropdown-menu dropdown-menu-right">
+					        <a th:href="@{/user/update}" class="dropdown-item">Atualizar Informações</a>
+					        <a th:href="@{/user/delete}" class="dropdown-item">Deletar Conta</a>
+					        <a href="/logout" class="dropdown-item">Sair</a>
+					    </div>
+					</div>
 			    </div>
 			</div>
 		</nav>
-	ABOUT
+	
+		<div class="row w-100 back-with-img" style="padding:38px 0;margin-left:0px;">
+			<div class="col-md-3"></div>
+			<div class="col-md-6 text-center">
+				<img class="img-fluid" src="/img/logo_com_slogan.png" alt="logo yukihira">
+			</div>
+		</div>
+		<div class="row w-100">
+			<div class="row" style="margin-top:10px;">
+				<div class="col-md-6 text-center">
+					<img class="shadow p-3 mb-5 bg-white rounded" src="/img/interior-rest-1.jpg" alt="interior restaurante 1">
+				</div>
+				<div class="col-md-5 text-center">
+					<p class="texto">O Yukihira é um dos mais tradicionais restaurantes japoneses do Ceará. Localizado 
+					em Quixadá, une o melhor da comida japonesa com um ambiente calmo e relaxante e um atendimento 
+					impecável.</p>
+				</div>
+			</div>
+			<div class="row" style="margin-top:10px;">
+				<div class="col-md-1"></div>
+				<div class="col-md-5 text-center">
+					<p class="texto">Nosso cardápio oferece a você variedade, qualidade e tradição. Aqui você encontra os 
+					melhores pratos da cozinha japonesa preparados com ingredientes selecionados.</p>
+				</div>
+				<div class="col-md-6 text-center">
+					<img class="shadow p-3 mb-5 bg-white rounded" src="/img/interior-rest-2.jpg" alt="interior restaurante 2">
+				</div>
+			</div>
+		</div>
 	
 	
+		<footer class="page-footer font-small cyan darken-3 bg-dark" style="color:white;">
+		  <div class="container-fluid" style="max-height:80px;overflow:hidden;">
+		    <div class="row text-center">
+		      <div class="col-md-12 py-5">
+		        <div class="flex-center">
+		          <a class="fb-ic">
+		            <i class="fa fa-facebook-f fa-lg white-text mr-md-5 mr-3 fa-2x"> </i>
+		          </a>
+		          <a class="tw-ic">
+		            <i class="fa fa-twitter fa-lg white-text mr-md-5 mr-3 fa-2x"> </i>
+		          </a>
+		          <a class="gplus-ic">
+		            <i class="fa fa-google-plus fa-lg white-text mr-md-5 mr-3 fa-2x"> </i>
+		          </a>
+		          <a class="li-ic">
+		            <i class="fa fa-linkedin fa-lg white-text mr-md-5 mr-3 fa-2x"> </i>
+		          </a>
+		          <a class="ins-ic">
+		            <i class="fa fa-instagram fa-lg white-text mr-md-5 mr-3 fa-2x"> </i>
+		          </a>
+		          <a class="pin-ic">
+		            <i class="fa fa-pinterest fa-lg white-text fa-2x"> </i>
+		          </a>
+		        </div>
+		      </div>
+		    </div>
+		  </div>
+		
+		  <div class="footer-copyright text-center py-3">© 2019 Copyright:
+		    <a href="https://www.linkedin.com/in/caio-weliton-6ba0a9173/"> Caio Weliton</a>
+		  </div>
+		  
+		</footer>
 	</div>
-	
-	
-	
-	
-	
-	
-	
 	
 	<script src="/js/jquery-3.4.1.min.js"></script>
 	<script src="/js/bootstrap.min.js"></script>

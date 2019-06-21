@@ -37,4 +37,10 @@ public class ShoppingCart {
 		setTotal(getTotal() - items.get(index).getTotalPrice());
 		items.remove(index);
 	}
+	
+	public void addIdPedido(Pedido pedido) {
+		for (Item item: items) {
+			item.setPedido(pedido);
+		}
+	}
 }

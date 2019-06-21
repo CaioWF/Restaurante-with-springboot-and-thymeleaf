@@ -1,6 +1,10 @@
 package br.com.ufc.controller;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -42,18 +46,23 @@ public class UserController {
 		return mv;
 	}
 	
-	@RequestMapping("/delete/{code}")
+	@RequestMapping("/delete")
 	public ModelAndView deleteUser(@PathVariable Long code) {
-		userService.deleteUser(code);
+		Object auth = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		UserDetails user = (UserDetails) auth;
+		User userConnected = userService.getByEmail(user.getUsername());
+		userService.deleteUser(userConnected.getCode());
 		ModelAndView mv = new ModelAndView("redirect:/");
 		return mv;
 	}
 
-	@RequestMapping("/update/{code}")
-	public ModelAndView updateUser(@PathVariable Long code) {
-		User user = userService.getByCode(code);
+	@RequestMapping("/update")
+	public ModelAndView updateUser() {
+		Object auth = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		UserDetails user = (UserDetails) auth;
+		User userConnected = userService.getByEmail(user.getUsername());
 		ModelAndView mv = new ModelAndView("registerUser");
-		mv.addObject("user", user);
+		mv.addObject("user", userConnected);
 		return mv;
 	}
 }

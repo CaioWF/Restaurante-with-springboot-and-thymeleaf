@@ -37,17 +37,18 @@ public class DishController {
 		}
 		dishService.registerDish(dish, photo);
 		mv.addObject("message", "Prato cadastrado!");
+		mv.addObject("dish", new Dish());
 		return mv;
 	}
 	
-	@RequestMapping("/delete/{code}")
+	@RequestMapping("/delete/{id}")
 	public ModelAndView deleteDish(@PathVariable Long id) {
 		dishService.deleteDish(id);
-		ModelAndView mv = new ModelAndView("redirect:/dish");
+		ModelAndView mv = new ModelAndView("redirect:/dish/dishes");
 		return mv;
 	}
 
-	@RequestMapping("/update/{code}")
+	@RequestMapping("/update/{id}")
 	public ModelAndView updateDish(@PathVariable Long id) {
 		Dish dish = dishService.getById(id);
 		ModelAndView mv = new ModelAndView("registerDish");
