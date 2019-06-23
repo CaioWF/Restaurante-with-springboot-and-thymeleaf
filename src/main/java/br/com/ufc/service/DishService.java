@@ -28,6 +28,8 @@ public class DishService {
 	
 	public void deleteDish(Long id) {
 		dishRepository.deleteById(id);
+		String path = "images/dish/"+id+".png";
+		FileUtils.deleteImage(path);
 	}
 	
 	public Dish getById(Long id) {

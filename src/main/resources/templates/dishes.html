@@ -30,6 +30,11 @@ xmlns:th="http://www.thymeleaf.org" class="h-100 w-100">
 						<a class="nav-link active" href="#">Pratos</a>
 					</li>
 			    </ul>
+			    <div>
+			    	<a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/dish/register}">
+			    		<button type="button" class="btn btn-success btn-large btn-block" style="max-width:380px;color:white;">
+			    			<span class="fa fa-plus-circle"></span> Adicionar Prato </button></a>
+			    </div>
 			    <div sec:authorize="!isAuthenticated()">
 			    	<a class="new-nav-link1" href="/user/login">Entre</a>
 			    	<span style="color: rgba(255,255,255,.5)"> 	ou </span>
@@ -40,6 +45,7 @@ xmlns:th="http://www.thymeleaf.org" class="h-100 w-100">
 			    	<div class="dropdown d-inline">
 					    <a href="#" class="dropdown-toggle trans" data-toggle="dropdown" style="color:inherit;">Opções</a>
 					    <div class="dropdown-menu dropdown-menu-right">
+					    	<a th:href="@{/pedido/pedidosUser}" class="dropdown-item">Histórico de Pedidos</a>
 					        <a th:href="@{/user/update}" class="dropdown-item">Atualizar Informações</a>
 					        <a th:href="@{/user/delete}" class="dropdown-item">Deletar Conta</a>
 					        <a href="/logout" class="dropdown-item">Sair</a>
@@ -113,15 +119,12 @@ xmlns:th="http://www.thymeleaf.org" class="h-100 w-100">
 						  </div>
 					</div>
 				</div>
-				<div class="col-lg-4 col-md- mh-75" style="margin-top: 5px;background-color: #eee;">
+				<div class="col-lg-4 col-md mh-75" style="margin-top: 5px;background-color: #eee;">
 					<div style="height:30px;margin-bottom:10px;">
-						<div sec:authorize="hasRole('ROLE_ADMIN')" class="text-center">
-							<a th:href="@{/dish/register}"><button type="button" class="btn btn-success btn-large btn-block position-absolute" style="max-width:380px;color:white;"><span class="fa fa-plus-circle"></span> Adicionar Prato </button></a>
-						</div>
-						<div class="text-center" sec:authorize="hasRole('ROLE_USER')">
+						<div class="text-center">
 							<h2 class="bg-info" style="color:white;">Lista de Itens</h2>
-							<div class="mh-75 table-overflow">
-								<table style="max-height:600px;" class="table" id="items-order">
+							<div class="table-overflow">
+								<table style="max-height:420px;" class="table" id="items-order">
 									<thead>
 										<tr>
 											<th scope="col">Nome</th>
@@ -142,7 +145,11 @@ xmlns:th="http://www.thymeleaf.org" class="h-100 w-100">
 								</table>
 								<div th:if="${#lists.isEmpty(listitems)}" id="nothing-selected">Nenhum item selecionado</div>
 							</div>
-							<a th:href="@{/pedido/save}" th:if="${not #lists.isEmpty(listitems)}" style="bottom:0;max-width:385px;color:white;" class="btn btn-success btn-large btn-block position-absolute" id="finish-order">Finalizar pedido</a>
+							<div th:if="${not #lists.isEmpty(listitems)}">
+								<h2 style="font-weight:bold;">Valor Total <span style="color:red;">R$ <span th:text="${#numbers.formatDecimal(totalPedido, 0, 'COMMA', 2, 'POINT')}"></span></span></h2>
+								<input id="address" type="text" class="form-control" style="margin-bottom: 5px;" placeholder="Digite aqui o endereço de entrega" title="Caso não informe será usado o endereço de cadastro do usuário">
+								<a th:href="@{/pedido/save/pattern}" style="bottom:0;max-width:385px;color:white;" class="btn btn-success btn-large btn-block" id="finish-order"><span class="fa fa-shopping-cart"></span> Finalizar pedido</a>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -217,6 +224,14 @@ xmlns:th="http://www.thymeleaf.org" class="h-100 w-100">
 	        	var qtdValue = parseInt(qtdElement.val());
 	        	qtdElement.val(qtdValue+1);
 	        	qtdElement.change();
+	        });
+	        $("#address").change(function(){
+	        	var address = $("#address").val();
+	        	var href = $("#finish-order").attr('href');
+	        	href = ('href', href.substring(0, href.lastIndexOf("/")));
+	        	href += "/"+address;
+	        	$("#finish-order").attr('href', href);
+	        	console.log(href);
 	        });
 	    });
 		

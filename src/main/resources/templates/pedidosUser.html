@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
-xmlns:th="http://www.thymeleaf.org" class="h-100 w-100">
+xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<title>User Register</title>
+<title>Meus Pedidos</title>
 <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="/css/styles.css">
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 </head>
-<body class="h-100">
+<body>
 	<div class="container col-12">
 		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 			<a class="navbar-brand" href="/">
@@ -24,7 +24,7 @@ xmlns:th="http://www.thymeleaf.org" class="h-100 w-100">
 						<a class="nav-link" href="/"> Página Inicial</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="/about">Sobre</a>
+						<a class="nav-link active" href="#">Sobre</a>
 					</li>
 					<li class="nav-item">
 						<a class="nav-link" href="/dish/dishes">Pratos</a>
@@ -49,55 +49,69 @@ xmlns:th="http://www.thymeleaf.org" class="h-100 w-100">
 			    </div>
 			</div>
 		</nav>
-		<div class="container col-md-4 wrapper-form top-1-percent">
-			<div class="row justify-content-center">
-				<h2>Cadastro</h2>
-			</div>
-			<div class="row">
-				<div class="col">
-					<form action="/user/save" method="POST" th:object="${user}">
-						<div class="alert alert-success" role="alert" th:if="${!#strings.isEmpty(message)}">
-							<span th:text="${message}"></span>
-						</div>
-						<div class="alert alert-danger" role="alert" th:if="${#fields.hasAnyErrors()}">
-							<div th:each="detailedError : ${#fields.detailedErrors()}">
-								<span th:text="${detailedError.message}"></span>
+		
+		<div th:each="pedido : ${pedidos}">
+			<div class="modal fade" th:id="'modal'+${pedido.id}" tabindex="-1" role="dialog" aria-labelledby="classInfo" aria-hidden="true">
+				<div class="modal-dialog modal-lg" role="document">
+					<div class="modal-content text-center">
+					<h1>Itens do Pedido</h1>
+				    	<!--Content-->
+						<div class="modal-content">
+				  			<!--Body-->
+							<div style="max-height:450px; overflow-y: scroll;" class="modal-body mb-0 p-0">
+				     			<table class="table">
+									<thead>
+										<tr>
+											<th scope="col">Id</th>
+											<th scope="col">Quantidade</th>
+											<th scope="col">Prato</th>
+											<th scope="col">Valor Item</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr th:each="item : ${pedido.items}">
+											<td th:text="${item.id}"></td>
+											<td th:text="${item.quantity}"></td>
+											<td th:text="${item.dish.name}"></td>
+											<td th:text="${item.totalPrice}"></td>
+										</tr>
+									</tbody>
+								</table>
+				       		</div>
+				
+				       		<!--Footer-->
+							<div class="modal-footer">
+				  				<a data-dismiss="modal" style="color:white;" class="btn btn-danger btn-rounded">Fechar</a>
 							</div>
 						</div>
-						<input type="hidden" th:field="*{code}" />
-						<div class="form-group">
-							<label for="email">E-mail</label>
-						    <input type="email" class="form-control" id="email" th:field="*{email}" placeholder="Digite seu e-mail">
-						</div>
-						<div class="form-group">
-							<label for="pass">Senha</label>
-						    <input type="password" class="form-control" id="pass" th:field="*{pass}" placeholder="Digite sua senha">
-						</div>
-						<div class="form-group">
-							<label for="name">Nome</label>
-						    <input type="text" class="form-control" id="name" th:field="*{name}" placeholder="Digite seu nome">
-						</div>
-					  	<div class="form-row">
-					  		<div class="form-group col-5">
-						    	<label for="cpf">CPF</label>
-						    	<input type="text" class="form-control" id="cpf" th:field="*{cpf}" placeholder="Digite seu CPF">
-						  	</div>
-						  	<div class="form-group col">
-							    <label for="date-of-birth">Data de Nascimento</label>
-							    <input type="text" class="form-control" id="date-of-birth" th:field="*{dateOfBirth}" placeholder="Digite sua data de nascimento">
-							</div>
-					  	</div>
-					  	<div class="form-group">
-					    	<label for="address">Endereço</label>
-					    	<input type="text" class="form-control" id="address" th:field="*{address}" placeholder="Digite seu endereço">
-					  	</div>
-						
-						<input type="submit" class="btn btn-primary btn-large btn-block" value="Cadastrar">
-					</form>
+						<!--/.Content-->
+				    </div>
 				</div>
 			</div>
 		</div>
-		<footer class="page-footer font-small cyan darken-3 bg-dark" style="color:white;margin-top:5px;">
+	
+		<div class="container" style="margin-top:10px;	">
+			<table class="table table-dark">
+				<thead>
+					<tr>
+						<th scope="col">Id</th>
+						<th scope="col">Data</th>
+						<th scope="col">Total</th>
+						<th scope="col">Visualizar</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="pedido : ${pedidos}"> 
+						<td th:text="${pedido.id}"></td>
+						<td th:text="${pedido.date}"></td>
+						<td th:text="${pedido.totalPrice}"></td>
+						<td ><a data-toggle="modal" th:attr="data-target='#modal'+${pedido.id}"><span class="fa fa-search-plus"></span></a></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	
+		<footer class="page-footer font-small cyan darken-3 bg-dark" style="color:white;">
 		  <div class="container-fluid" style="max-height:80px;overflow:hidden;">
 		    <div class="row text-center">
 		      <div class="col-md-12 py-5">
@@ -134,6 +148,5 @@ xmlns:th="http://www.thymeleaf.org" class="h-100 w-100">
 	
 	<script src="/js/jquery-3.4.1.min.js"></script>
 	<script src="/js/bootstrap.min.js"></script>
-	<script src="/js/jquery.mask.min.js"></script>
 </body>
 </html>

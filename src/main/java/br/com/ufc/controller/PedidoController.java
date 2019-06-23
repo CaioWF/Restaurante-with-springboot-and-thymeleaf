@@ -1,5 +1,9 @@
 package br.com.ufc.controller;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -49,6 +53,7 @@ public class PedidoController {
 		shoppingCart.addItem(item);
 		ModelAndView mv = new ModelAndView("redirect:/dish/dishes");
 		redir.addFlashAttribute("listitems", shoppingCart.getItems());
+		redir.addFlashAttribute("totalPedido", shoppingCart.getTotal());
 		return mv;
 	}
 	
@@ -57,18 +62,26 @@ public class PedidoController {
 		shoppingCart.deleteItem(index);
 		ModelAndView mv = new ModelAndView("redirect:/dish/dishes");
 		redir.addFlashAttribute("listitems", shoppingCart.getItems());
+		redir.addFlashAttribute("totalPedido", shoppingCart.getTotal());
 		return mv;
 	}
 	
-	@RequestMapping("/save")
-	public ModelAndView savePedido() {
+	@RequestMapping("/save/{address}")
+	public ModelAndView savePedido(@PathVariable String address) {
 		Pedido pedido = new Pedido();
 		pedido.setItems(shoppingCart.getItems());
 		pedido.setTotalPrice(shoppingCart.getTotal());
+		pedido.setDate(new Date());
 		
 		Object auth = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		UserDetails user = (UserDetails) auth;
 		User userConnected = userService.getByEmail(user.getUsername());
+		
+		if(address.equals("pattern")) {
+			pedido.setDeliveryAddress(userConnected.getAddress());
+		} else {
+			pedido.setDeliveryAddress(address);
+		}
 		
 		pedido.setUser(userConnected);
 		pedidoService.registerPedido(pedido);
@@ -76,8 +89,25 @@ public class PedidoController {
 		shoppingCart.addIdPedido(pedido);
 		itemService.saveAll(shoppingCart.getItems());
 		
+		shoppingCart = new ShoppingCart();
+		
 		ModelAndView mv = new ModelAndView("redirect:/");
 		mv.addObject("message", "Pedido realizado!");
+		return mv;
+	}
+	
+	@RequestMapping("/pedidosUser")
+	public ModelAndView AllPedidosByUser() {
+		Object auth = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		UserDetails user = (UserDetails) auth;
+		User userConnected = userService.getByEmail(user.getUsername());
+		
+		ModelAndView mv = new ModelAndView("pedidosUser");
+		
+		List<Pedido> pedidos = pedidoService.getAllByUser(userConnected.getCode());
+		
+		
+		mv.addObject("pedidos", pedidos);
 		return mv;
 	}
 

@@ -1,5 +1,8 @@
 package br.com.ufc.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,5 +25,8 @@ public class PedidoService {
 	
 	public Pedido getById(Long id) {
 		return pedidoRepository.getOne(id);
+	}
+	public List<Pedido> getAllByUser(Long user_code) {
+		return pedidoRepository.findByUserCode(user_code);
 	}
 }

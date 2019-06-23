@@ -15,4 +15,8 @@ public class FileUtils {
 			e.printStackTrace();
 		}
 	}
+	public static void deleteImage(String path) {
+		File file = new File(path);
+		org.apache.commons.io.FileUtils.deleteQuietly(file);
+	}
 }
