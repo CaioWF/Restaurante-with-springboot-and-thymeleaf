@@ -1,6 +1,5 @@
 package br.com.ufc.controller;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -8,8 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -22,6 +19,7 @@ import br.com.ufc.model.ShoppingCart;
 import br.com.ufc.model.User;
 import br.com.ufc.service.DishService;
 import br.com.ufc.service.ItemService;
+import br.com.ufc.service.MailSenderService;
 import br.com.ufc.service.PedidoService;
 import br.com.ufc.service.UserService;
 
@@ -30,6 +28,8 @@ import br.com.ufc.service.UserService;
 public class PedidoController {
 	
 	private ShoppingCart shoppingCart = new ShoppingCart();
+	@Autowired
+	private MailSenderService mailSender = new MailSenderService();
 	
 	@Autowired
 	private PedidoService pedidoService = new PedidoService();
@@ -88,6 +88,9 @@ public class PedidoController {
 		
 		shoppingCart.addIdPedido(pedido);
 		itemService.saveAll(shoppingCart.getItems());
+		
+		//aquiii
+		mailSender.sendMail(pedido.getTotalPrice(), userConnected.getEmail());
 		
 		shoppingCart = new ShoppingCart();
 		

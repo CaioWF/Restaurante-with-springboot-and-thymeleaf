@@ -1,14 +1,11 @@
 package br.com.ufc.controller;
 
-import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -47,12 +44,12 @@ public class UserController {
 	}
 	
 	@RequestMapping("/delete")
-	public ModelAndView deleteUser(@PathVariable Long code) {
+	public ModelAndView deleteUser() {
 		Object auth = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		UserDetails user = (UserDetails) auth;
 		User userConnected = userService.getByEmail(user.getUsername());
 		userService.deleteUser(userConnected.getCode());
-		ModelAndView mv = new ModelAndView("redirect:/");
+		ModelAndView mv = new ModelAndView("redirect:/logout");
 		return mv;
 	}
 

@@ -45,9 +45,9 @@ xmlns:th="http://www.thymeleaf.org" class="h-100 w-100">
 			    	<div class="dropdown d-inline">
 					    <a href="#" class="dropdown-toggle trans" data-toggle="dropdown" style="color:inherit;">Opções</a>
 					    <div class="dropdown-menu dropdown-menu-right">
-					    	<a th:href="@{/pedido/pedidosUser}" class="dropdown-item">Histórico de Pedidos</a>
-					        <a th:href="@{/user/update}" class="dropdown-item">Atualizar Informações</a>
-					        <a th:href="@{/user/delete}" class="dropdown-item">Deletar Conta</a>
+					    	<a sec:authorize="hasRole('ROLE_USER')" th:href="@{/pedido/pedidosUser}" class="dropdown-item">Histórico de Pedidos</a>
+					        <a sec:authorize="hasRole('ROLE_USER')" th:href="@{/user/update}" class="dropdown-item">Atualizar Informações</a>
+					        <a sec:authorize="hasRole('ROLE_USER')" th:href="@{/user/delete}" class="dropdown-item">Deletar Conta</a>
 					        <a href="/logout" class="dropdown-item">Sair</a>
 					    </div>
 					</div>
@@ -61,7 +61,7 @@ xmlns:th="http://www.thymeleaf.org" class="h-100 w-100">
 		<div class="container-fluid d-flex w-100">
 			<!-- Grid row -->
 			<div class="row w-100">
-				<div class="col-lg-8 col-md-12" style="margin-top: 5px;">
+				<div class="col-lg-8 col-md-12" style="margin-top: 5px;max-height:430px;overflow:auto;">
 					<div class="row">
 						<div class="col-lg-6 col-md-5 col-sm-6 mb-4 text-center" th:each="dish : ${listdishes}">
 						    <!--Modal: Name-->
@@ -77,8 +77,8 @@ xmlns:th="http://www.thymeleaf.org" class="h-100 w-100">
 						              	<img style="max-width:800px;" class="img-fluid z-depth-1" th:src="@{'/images/dish/'+${dish.id}+.png}" alt="prato">
 						            </div>
 						            <div>
-					            		<h2 class="name" th:text="${dish.name}"></h2>
-					            		<h3 class="price" th:text="${dish.price}"></h3>
+					            		<h2 class="name title-img" th:text="${dish.name}"></h2>
+					            		<h3 style="color:red;font-weight:bold;">R$ <span class="price" th:text="${dish.price}"></span></h3>
 					            		<p th:text="${dish.description}">
 					            	</div>
 						          </div>
@@ -86,18 +86,18 @@ xmlns:th="http://www.thymeleaf.org" class="h-100 w-100">
 						          <!--Footer-->
 						          <div class="modal-footer">
 						          	
-						          	<div>
+						          	<div sec:authorize="hasRole('ROLE_ADMIN')">
 						          		<a th:href="@{/dish/update/{id}(id=${dish.id})}"><button type="button" class="btn btn-outline-info"><span class="fa fa-refresh"></span> Atualizar </button></a>
 						          		<a th:href="@{/dish/delete/{id}(id=${dish.id})}"><button type="button" class="btn btn-outline-danger"><span class="fa fa-trash"></span> Remover </button></a>
 						          	</div>
 						            
-						            <div>
+						            <div sec:authorize="!hasRole('ROLE_ADMIN')">
 							            <button id="decrease" class="btn btn-light d-inline decrease" disabled><h2>-</h2></button>
 							            <input style="max-width:50px;text-align:center;" min="1" type="number" class="d-inline qtd" value="1">
 							            <button id="increase" class="btn btn-light increase"><h3>+</h3></button>
 						            </div>
 						            
-						            <a th:href="'/pedido/add-item-to-shoppingcart/'+${dish.id}+'/1'" style="color:white;" class="btn btn-danger btn-rounded btn-lg pull-right add-item">Adicionar R$ <span class="price-calculated" th:text="${dish.price}"></span></a>
+						            <a sec:authorize="!hasRole('ROLE_ADMIN')" th:href="'/pedido/add-item-to-shoppingcart/'+${dish.id}+'/1'" style="color:white;" class="btn btn-danger btn-rounded btn-lg pull-right add-item">Adicionar R$ <span class="price-calculated" th:text="${dish.price}"></span></a>
 						
 						          </div>
 						
@@ -108,20 +108,20 @@ xmlns:th="http://www.thymeleaf.org" class="h-100 w-100">
 						    </div>
 						    <!--Modal: Name-->
 						
-						    <a>
+						    <div>
 						    	<img style="max-width: 250px; max-height: 200px" class="img-fluid img-thumbnail" th:src="@{'/images/dish/'+${dish.id}+.png}" alt="prato"
 						        data-toggle="modal" th:attr="data-target='#modal'+${dish.id}">
 						        <div>
 						        	<span style="font-weight:bold;font-size:20px;margin-right:10%;" th:text="${dish.name}"></span>
 						      		<span style="font-weight:bold;font-size:20px;color:red;">R$ <span th:text="${dish.price}"></span></span>
 						        </div>
-							</a>
+							</div>
 						  </div>
 					</div>
 				</div>
-				<div class="col-lg-4 col-md mh-75" style="margin-top: 5px;background-color: #eee;">
-					<div style="height:30px;margin-bottom:10px;">
-						<div class="text-center">
+				<div class="col-lg-4 col-md mh-75" style="margin-top: 5px;">
+					<div style="margin-bottom:5px;">
+						<div class="text-center" style="background-color: #eee; ">
 							<h2 class="bg-info" style="color:white;">Lista de Itens</h2>
 							<div class="table-overflow">
 								<table style="max-height:420px;" class="table" id="items-order">
@@ -139,16 +139,16 @@ xmlns:th="http://www.thymeleaf.org" class="h-100 w-100">
 											<td th:text="${item.dish.name}"></td>
 											<td th:text="${item.quantity}"></td>
 											<td th:text="${#numbers.formatDecimal(item.totalPrice, 0, 'COMMA', 2, 'POINT')}"></td>
-											<td><a th:href="@{/pedido/delete-item-from-shoppingcart/{index}(index=${iterStat.index})}"><button type="button" class="btn btn-outline-danger"><span class="fa fa-trash"></span></button></a></td>
+											<td sec:authorize="hasRole('ROLE_USER')"><a th:href="@{/pedido/delete-item-from-shoppingcart/{index}(index=${iterStat.index})}"><button type="button" class="btn btn-outline-danger"><span class="fa fa-trash"></span></button></a></td>
 										</tr>
 									</tbody>
 								</table>
 								<div th:if="${#lists.isEmpty(listitems)}" id="nothing-selected">Nenhum item selecionado</div>
 							</div>
-							<div th:if="${not #lists.isEmpty(listitems)}">
+							<div sec:authorize="hasRole('ROLE_USER')" th:if="${not #lists.isEmpty(listitems)}">
 								<h2 style="font-weight:bold;">Valor Total <span style="color:red;">R$ <span th:text="${#numbers.formatDecimal(totalPedido, 0, 'COMMA', 2, 'POINT')}"></span></span></h2>
 								<input id="address" type="text" class="form-control" style="margin-bottom: 5px;" placeholder="Digite aqui o endereço de entrega" title="Caso não informe será usado o endereço de cadastro do usuário">
-								<a th:href="@{/pedido/save/pattern}" style="bottom:0;max-width:385px;color:white;" class="btn btn-success btn-large btn-block" id="finish-order"><span class="fa fa-shopping-cart"></span> Finalizar pedido</a>
+								<a th:href="@{/pedido/save/pattern}" style="max-width:385px;color:white;" class="btn btn-success btn-large btn-block" id="finish-order"><span class="fa fa-shopping-cart"></span> Finalizar pedido</a>
 							</div>
 						</div>
 					</div>

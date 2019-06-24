@@ -27,7 +27,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		.antMatchers("/user/register").permitAll()
 		.antMatchers("/user/save").permitAll()
 		.antMatchers("/user/login").permitAll()
+		.antMatchers("/user/delete").hasRole("USER")
+		.antMatchers("/user/update").hasRole("USER")
 		.antMatchers("/dish/dishes").permitAll()
+		.antMatchers("/dish/register").hasRole("ADMIN")
+		.antMatchers("/dish/save").hasRole("ADMIN")
+		.antMatchers("/dish/delete/{id}").hasRole("ADMIN")
+		.antMatchers("/dish/update/{id}").hasRole("ADMIN")
+		.antMatchers("/pedido/save{address}").hasRole("USER")
+		.antMatchers("/pedido/add-item-to-shoppingcart/{id}/{quantity}").hasRole("USER")
+		.antMatchers("/pedido/delete-item-from-shoppingcart/{index}").hasRole("USER")
+		.antMatchers("/pedido/pedidosUser").hasRole("USER")
 		
 		.anyRequest().authenticated()
 		

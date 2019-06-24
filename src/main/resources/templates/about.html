@@ -40,9 +40,9 @@ xmlns:th="http://www.thymeleaf.org">
 			    	<div class="dropdown d-inline">
 					    <a href="#" class="dropdown-toggle trans" data-toggle="dropdown" style="color:inherit;">Opções</a>
 					    <div class="dropdown-menu dropdown-menu-right">
-					    	<a th:href="@{/pedido/pedidosUser}" class="dropdown-item">Histórico de Pedidos</a>
-					        <a th:href="@{/user/update}" class="dropdown-item">Atualizar Informações</a>
-					        <a th:href="@{/user/delete}" class="dropdown-item">Deletar Conta</a>
+					    	<a sec:authorize="hasRole('ROLE_USER')" th:href="@{/pedido/pedidosUser}" class="dropdown-item">Histórico de Pedidos</a>
+					        <a sec:authorize="hasRole('ROLE_USER')" th:href="@{/user/update}" class="dropdown-item">Atualizar Informações</a>
+					        <a sec:authorize="hasRole('ROLE_USER')" th:href="@{/user/delete}" class="dropdown-item">Deletar Conta</a>
 					        <a href="/logout" class="dropdown-item">Sair</a>
 					    </div>
 					</div>

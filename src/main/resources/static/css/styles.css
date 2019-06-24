@@ -94,7 +94,11 @@ input[type=number] {
     -moz-appearance:textfield; /* Firefox */
 }
 .table-overflow {
-    max-height:390px;
+    max-height:250px;
+    overflow-y:auto;
+}
+.table-overflow-2 {
+    max-height:360px;
     overflow-y:auto;
 }
 a:link {
