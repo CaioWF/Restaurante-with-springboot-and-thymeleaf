@@ -12,7 +12,7 @@
 	<artifactId>web-final-project</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>web-final-project</name>
-	<description>My final project in discipline web development</description>
+	<description>My final project in web development discipline</description>
 
 	<properties>
 		<java.version>1.8</java.version>

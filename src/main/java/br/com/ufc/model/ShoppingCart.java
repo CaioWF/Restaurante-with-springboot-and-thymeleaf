@@ -9,18 +9,22 @@ import org.springframework.web.context.annotation.SessionScope;
 @Component
 @SessionScope
 public class ShoppingCart {
-	private List<Item> items = new ArrayList<Item>();
-	private Double total = 0.0;
+	private static List<Item> items = new ArrayList<Item>();
+	private Double total;
 	
 	public List<Item> getItems() {
 		return items;
 	}
 	
-	public void setItems(List<Item> items) {
-		this.items = items;
+	public static void setItems(List<Item> items) {
+		ShoppingCart.items = items;
 	}
 		
 	public Double getTotal() {
+		total = 0.0;
+		for (Item i: ShoppingCart.items) {
+			total += i.getTotalPrice();
+		}
 		return total;
 	}
 	
@@ -42,5 +46,9 @@ public class ShoppingCart {
 		for (Item item: items) {
 			item.setPedido(pedido);
 		}
+	}
+	
+	public static void clearShoppingCart() {
+		items.clear();
 	}
 }

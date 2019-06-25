@@ -55,7 +55,7 @@ xmlns:th="http://www.thymeleaf.org" class="h-100 w-100">
 			</div>
 			<div class="row">
 				<div class="col">
-					<form action="/dish/save" method="POST" th:object="${dish}" enctype="multipart/form-data">
+					<form action="/dish/save" method="POST" enctype="multipart/form-data" th:object="${dish}">
 						<div class="alert alert-success" role="alert" th:if="${!#strings.isEmpty(message)}">
 							<span th:text="${message}"></span>
 						</div>
@@ -75,11 +75,11 @@ xmlns:th="http://www.thymeleaf.org" class="h-100 w-100">
 					  	</div>
 					  	<div class="form-group">
 						    <label for="price">Preço</label>
-						    <input type="number" class="form-control" id="price" step=".01" th:field="*{price}" placeholder="Digite o preço">
+						    <input type="number" class="form-control" id="price" min="0" step=".01" th:field="*{price}" placeholder="Digite o preço">
 						</div>
 						<div class="form-group">
 						    <label for="photo">Imagem do prato</label>
-						    <input type="file" class="form-control" id="photo" min="0" name="photo" placeholder="Escolha uma imagem">
+						    <input type="file" class="form-control" id="photo" name="photo" placeholder="Escolha uma imagem">
 						</div>
 						
 						<input type="submit" class="btn btn-primary btn-large btn-block" value="Cadastrar">

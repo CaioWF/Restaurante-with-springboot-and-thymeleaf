@@ -89,10 +89,9 @@ public class PedidoController {
 		shoppingCart.addIdPedido(pedido);
 		itemService.saveAll(shoppingCart.getItems());
 		
-		//aquiii
 		mailSender.sendMail(pedido.getTotalPrice(), userConnected.getEmail());
 		
-		shoppingCart = new ShoppingCart();
+		ShoppingCart.clearShoppingCart();
 		
 		ModelAndView mv = new ModelAndView("redirect:/");
 		mv.addObject("message", "Pedido realizado!");

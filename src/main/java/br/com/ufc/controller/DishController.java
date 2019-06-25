@@ -32,6 +32,7 @@ public class DishController {
 	@RequestMapping("/save")
 	public ModelAndView saveDish(@Validated Dish dish, BindingResult result, @RequestParam(value="photo") MultipartFile photo) {
 		ModelAndView mv = new ModelAndView("registerDish");
+		
 		if(result.hasErrors()) {
 			return mv;
 		}

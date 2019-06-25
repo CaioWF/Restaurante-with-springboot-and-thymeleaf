@@ -10,10 +10,14 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import br.com.ufc.security.UserDetailsServiceImplemments;
+import br.com.ufc.util.MyLogoutSuccessHandler;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+	
+	@Autowired
+	private MyLogoutSuccessHandler mlsh;
 
 	@Autowired
 	private UserDetailsServiceImplemments userDetailsServiceImplemments;
@@ -47,7 +51,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		
 		.and()
 		.logout()
-		.logoutSuccessUrl("/user/login?logout").permitAll();
+		.logoutSuccessHandler(mlsh);
 	}
 	
 	@Override
