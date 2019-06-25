@@ -9,7 +9,7 @@ import org.springframework.web.context.annotation.SessionScope;
 @Component
 @SessionScope
 public class ShoppingCart {
-	private static List<Item> items = new ArrayList<Item>();
+	public static List<Item> items = new ArrayList<Item>();
 	private Double total;
 	
 	public List<Item> getItems() {

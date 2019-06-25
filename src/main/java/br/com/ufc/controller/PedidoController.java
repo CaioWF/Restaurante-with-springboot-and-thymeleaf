@@ -28,6 +28,7 @@ import br.com.ufc.service.UserService;
 public class PedidoController {
 	
 	private ShoppingCart shoppingCart = new ShoppingCart();
+	
 	@Autowired
 	private MailSenderService mailSender = new MailSenderService();
 	
@@ -89,7 +90,7 @@ public class PedidoController {
 		shoppingCart.addIdPedido(pedido);
 		itemService.saveAll(shoppingCart.getItems());
 		
-		mailSender.sendMail(pedido.getTotalPrice(), userConnected.getEmail());
+		mailSender.sendMail(pedido, userConnected.getEmail());
 		
 		ShoppingCart.clearShoppingCart();
 		
